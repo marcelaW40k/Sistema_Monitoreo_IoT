@@ -1,0 +1,72 @@
+/* Layout general de la página de Login */
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Tarjeta contenedora del formulario (Card) */
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 32px;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f5f5f7;
+    text-align: center;
+}
+
+/* Título principal */
+.login-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+}
+
+/* Subtítulo */
+.login-subtitle {
+    font-size: 15px;
+    color: #86868b;
+    margin-bottom: 32px;
+}
+
+/* Caja de alertas de error */
+.login-error-box {
+    background-color: #fff5f5;
+    color: #ff3b30;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #ffccd0;
+    text-align: left;
+}
+
+/* Botón de envío */
+.login-submit-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #0071e3;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+}
+
+/* Estado cuando el botón está deshabilitado por carga */
+.login-submit-btn:disabled {
+    background-color: #86868b;
+    cursor: not-allowed;
+}
+
+.login-submit-btn:active:not(:disabled) {
+    transform: scale(0.98); /* Efecto táctil de hundimiento */
+}

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sensores", indexes = {
-        @Index(name = "idx_device_id", columnList = "deviceId"),
         @Index(name = "idx_timestamp", columnList = "timestamp")
 })
 @Getter

@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Endpoint de conexión inicial que usará React. Permitimos CORS completo.
         registry.addEndpoint("/ws-fleet")
-                .setAllowedOrigins("http://localhost:3000")
+                .setAllowedOrigins("http://localhost:5173")
                 .withSockJS(); // Soporte de caída si el navegador no soporta Websockets nativos
     }
 }

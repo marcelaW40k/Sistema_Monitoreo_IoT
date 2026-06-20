@@ -17,14 +17,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // Permitir solicitudes de pre-vuelo CORS (crucial para conectar con React)
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            return true;
-        }
-
         String path = request.getRequestURI();
-
-        // Excluir de forma explícita el endpoint público de Login y de Registro
         if (path.startsWith("/api/auth/")) {
             return true;
         }
