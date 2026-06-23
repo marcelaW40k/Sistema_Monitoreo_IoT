@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AlertRepository extends JpaRepository<Alert, Long> {
+public interface  AlertRepository extends JpaRepository<Alert, Long> {
     // Devuelve las alertas activas (no resueltas)
     List<Alert> findByIsResolvedFalseOrderByTimestampDesc();
 }

@@ -1,3 +1,51 @@
+/* Contenedor dinámico de alertas */
+.alerts-scroll-container {
+    max-height: 290px; /* Altura perfecta para mostrar ~4 alertas cómodamente */
+    overflow-y: auto;  /* Activa el scroll vertical solo si es necesario */
+    padding-right: 8px;
+}
+
+/* Estilización premium de la barra de scroll (Estilo Apple / Minimalista) */
+.alerts-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.alerts-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.alerts-scroll-container::-webkit-scrollbar-thumb {
+    background: #d2d2d7;
+    border-radius: 10px;
+}
+
+.alerts-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #86868b;
+}
+
+/* Caja de cada alerta individual */
+.alert-item-box {
+    background-color: rgba(255, 59, 48, 0.05); /* Sutil fondo rojo de advertencia */
+    border-left: 4px solid #ff3b30; /* Barra lateral roja vibrante */
+    padding: 12px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.alert-message {
+    margin: 0 0 4px 0;
+    font-size: 13.5px;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+.alert-time {
+    margin: 0;
+    font-size: 11px;
+    color: #86868b;
+}
+
 /* Contenedor general del Dashboard */
 .dashboard-container {
     padding: 32px;
@@ -115,4 +163,62 @@
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/* Contenedor externo */
+.charts-section-container {
+    margin-top: 24px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.charts-section-container h3 {
+    margin-bottom: 16px;
+    font-size: 18px;
+    color: #1d1d1f;
+}
+
+/* --- DISEÑO PARA MÓVILES (Por defecto) --- */
+.charts-grid-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chart-wrapper {
+    position: relative;
+    width: 100% !important; 
+    height: 280px;          
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; 
+}
+
+
+.chart-wrapper canvas {
+    width: 100% !important; 
+    height: calc(100% - 30px) !important;
+    display: block;
+}
+
+@media (min-width: 1024px) {
+    .charts-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        gap: 24px;
+    }
+
+    .chart-wrapper {
+        height: 360px; 
+    }
 }

@@ -40,12 +40,42 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/fleet/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/fleet/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/fleet/vehicles/*/history").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/fleet/telemetry/live-locations").hasAnyRole("USER", "ADMIN")
 
 
                         // Cualquier otra petición a la API requerirá autenticación token
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 );
 
+//        .authorizeHttpRequests(auth -> auth
+//                // 1. Permitir Preflight OPTIONS siempre (Manejo de CORS en navegadores)
+//                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//
+//                // 2. Rutas verdaderamente PÚBLICAS (No requieren Token)
+//                .requestMatchers("/api/auth/**").permitAll()
+//                .requestMatchers("/ws-fleet/**", "/ws/**").permitAll()
+//                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//
+//                // 3. RUTAS COMPARTIDAS (Requieren Token de cualquier rol: USER o ADMIN)
+//                // ¡Ojo! Tienen que usar la ruta completa con "/api/fleet/"
+//                .requestMatchers(HttpMethod.GET, "/api/fleet/vehicles/*/history").hasAnyRole("USER", "ADMIN")
+//                .requestMatchers(HttpMethod.GET, "/api/fleet/vehicles").hasAnyRole("USER", "ADMIN")
+//                .requestMatchers(HttpMethod.GET, "/api/fleet/telemetry/live-locations").hasAnyRole("USER", "ADMIN")
+//
+//                // 4. RUTAS EXCLUSIVAS DE ADMINISTRADOR (Requieren Token con rol ADMIN)
+//                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                .requestMatchers(HttpMethod.GET, "/api/fleet/admin/alerts").hasRole("ADMIN")
+//                .requestMatchers(HttpMethod.POST, "/api/fleet/telemetry/**").hasRole("ADMIN")
+//
+//                // 5. CUALQUIER OTRA RUTA BAJO /api/** (Requiere que al menos esté autenticado)
+//                // Eliminamos el .permitAll() de aquí para que obligue a validar el JWT
+//                .requestMatchers("/api/**").authenticated()
+//
+//                // Cualquier otra petición residual del sistema requerirá autenticación
+//                .anyRequest().authenticated()
+//        );
         return http.build();
     }
 

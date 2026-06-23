@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -9,12 +10,34 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+const AutoFitBounds = ({ vehicles }) => {
+    const map = useMap();
+    
+    useEffect(() => {
+        if (!vehicles || vehicles.length === 0) return;
+
+        // Filtramos solo las coordenadas válidas
+        const validPoints = vehicles
+            .filter(s => !isNaN(Number(s.latitude)) && !isNaN(Number(s.longitude)))
+            .map(s => [Number(s.latitude), Number(s.longitude)]);
+
+        if (validPoints.length > 0) {
+            // Creamos un área perimetral que contenga a todos los vehículos
+            const bounds = L.latLngBounds(validPoints);
+            
+            // Hacemos que el mapa se acerque (Zoom) automáticamente a ese grupo con una animación suave
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+        }
+    }, [vehicles, map]);
+
+    return null;
+};
+
 const VehicleMap = ({ vehicles }) => {
-    // Coordenadas por defecto (Centro en Bogotá)
     const defaultCenter = [4.6097, -74.0817]; 
 
     return (
-        <div className="map-wrapper" style={{ height: '400px', width: '100%', marginBottom: '20px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+        <div className="map-wrapper" style={{ height: '450px', width: '100%', marginBottom: '20px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
             <MapContainer 
                 center={defaultCenter} 
                 zoom={6} 
@@ -26,29 +49,29 @@ const VehicleMap = ({ vehicles }) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                {/* Mapeo iterativo de vehículos */}
-                {vehicles && vehicles.map(vehicle => {
-                    // Validamos y convertimos a número por seguridad
-                    const lat = Number(vehicle.latitude);
-                    const lng = Number(vehicle.longitude);
+                <AutoFitBounds vehicles={vehicles} />
 
-                    if (!isNaN(lat) && !isNaN(lng)) {
+                {vehicles && vehicles.map(sensorReport => {
+                    const lat = Number(sensorReport.latitude);
+                    const lng = Number(sensorReport.longitude);
+                    const vehicleEntity = sensorReport.vehicle;
+
+                    if (!isNaN(lat) && !isNaN(lng) && vehicleEntity) {
                         return (
-                            // Usamos vehicle_id que viene de la query SQL anterior
-                            <Marker key={vehicle.vehicle_id} position={[lat, lng]}>
+                            <Marker key={vehicleEntity.id} position={[lat, lng]}>
                                 <Popup>
                                     <div style={{ fontSize: '13px', minWidth: '160px' }}>
                                         <h4 style={{ margin: '0 0 5px 0', color: '#0071e3' }}>
-                                            Placa: {vehicle.plate}
+                                            Placa: {vehicleEntity.plate}
                                         </h4>
-                                        <p style={{ margin: '3px 0' }}><strong>Modelo:</strong> {vehicle.model}</p>
-                                        {/* Ajustado a snake_case para coincidir con la DB */}
-                                        <p style={{ margin: '3px 0' }}><strong>Dispositivo:</strong> {vehicle.device_id}</p>
-                                        {vehicle.speed !== undefined && (
-                                            <p style={{ margin: '3px 0' }}><strong>Velocidad:</strong> {vehicle.speed} km/h</p>
+                                        <p style={{ margin: '3px 0' }}><strong>Modelo:</strong> {vehicleEntity.model}</p>
+                                        <p style={{ margin: '3px 0' }}><strong>Dispositivo:</strong> {vehicleEntity.deviceId}</p>
+                                        
+                                        {sensorReport.speed !== undefined && (
+                                            <p style={{ margin: '3px 0' }}><strong>Velocidad:</strong> {sensorReport.speed} km/h</p>
                                         )}
-                                        {vehicle.fuel_level !== undefined && (
-                                            <p style={{ margin: '3px 0' }}><strong>Combustible:</strong> {vehicle.fuel_level}%</p>
+                                        {sensorReport.fuelLevel !== undefined && (
+                                            <p style={{ margin: '3px 0' }}><strong>Combustible:</strong> {sensorReport.fuelLevel}%</p>
                                         )}
                                     </div>
                                 </Popup>

@@ -6,26 +6,28 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
-    const token = localStorage.getItem('token');
-    const email = localStorage.getItem('email');
-    const role = localStorage.getItem('role');
-
-    if (token && email && role) {
-      return { token, email, role };
-    }
-    return null;
-  });
-   
+        const token = localStorage.getItem('token');
+        const email = localStorage.getItem('email');
+        const role = localStorage.getItem('role');
+        const name = localStorage.getItem('name');
+        if (token && email && role && name) {
+            return { token, email, role, name };
+        }
+        return null;
+    });
 
     // Función para actualizar el estado global cuando el backend responde con éxito
     const loginGlobal = (authData) => {
         localStorage.setItem('token', authData.token);
         localStorage.setItem('email', authData.email);
         localStorage.setItem('role', authData.role);
+        localStorage.setItem('name', authData.name);
+        
         setUser({
             token: authData.token,
             email: authData.email,
-            role: authData.role
+            role: authData.role,
+            name: authData.name
         });
     };
 

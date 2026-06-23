@@ -18,8 +18,16 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String path = request.getRequestURI();
+        String method = request.getMethod();
+
+        // Permitir las rutas públicas de autenticación
         if (path.startsWith("/api/auth/")) {
             return true;
+        }
+
+        // VALIDACIÓN AGREGADA: Permitir que USER y ADMIN consulten el histórico (GET) sin restricciones extras del interceptor
+        if (path.contains("/vehicles/") && path.contains("/history") && "GET".equalsIgnoreCase(method)) {
+            return true; // Continúa directamente al controlador (Spring Security validará el rol)
         }
 
         // Obtener el encabezado HTTP 'Authorization'

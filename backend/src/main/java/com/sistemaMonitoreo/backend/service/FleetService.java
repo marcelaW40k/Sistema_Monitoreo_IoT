@@ -1,5 +1,6 @@
 package com.sistemaMonitoreo.backend.service;
 
+import com.sistemaMonitoreo.backend.DTO.SensorResponseDTO;
 import com.sistemaMonitoreo.backend.model.Alert;
 import com.sistemaMonitoreo.backend.model.Sensor;
 import com.sistemaMonitoreo.backend.model.Vehicle;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FleetService {
@@ -85,5 +87,17 @@ public class FleetService {
 
     public List<Alert> getActiveAlerts() {
         return alertRepository.findByIsResolvedFalseOrderByTimestampDesc();
+    }
+
+    public List<SensorResponseDTO> getLiveLocations(String userRole) {
+        List<Sensor> sensors = sensorRepository.findLatestTelemetryPerVehicle();
+
+        return sensors.stream()
+                .map(sensor -> SensorResponseDTO.fromEntity(sensor, userRole))
+                .collect(Collectors.toList());
+    }
+
+    public List<Sensor> getVehicleHistory(Long vehicleId) {
+        return sensorRepository.findTop20ByVehicleIdOrderByTimestampDesc(vehicleId);
     }
 }
