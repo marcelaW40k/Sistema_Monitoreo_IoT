@@ -108,6 +108,16 @@ INSERT INTO sensores (vehicle_id, current_consumption, fuel_level, latitude, lon
 (1, 30.0, 8.5,   6.185, -75.490, 85.0, 34.0, NOW());
 ```
 
+## 6. Alertas
+
+Datos de alertas.
+
+```sql
+INSERT INTO alertas (is_resolved, timestamp, vehicle_id, message, type) VALUES 
+(false, NOW() - INTERVAL '1 minute', 1, 'CRITICAL: Descenso abrupto del nivel de combustible en un 15% en menos de 3 minutos. Posible fuga o extracción no autorizada.', 'CRITICAL'),
+(true, NOW() - INTERVAL '50 minutes', 1, 'INFO: Conexión restablecida con el dispositivo IoT secundario DEV-1234-XC54.', 'INFO');
+```
+
 ### 📈 Variables monitoreadas
 
 - Velocidad (`speed`)
@@ -119,31 +129,6 @@ INSERT INTO sensores (vehicle_id, current_consumption, fuel_level, latitude, lon
 
 ---
 
-## 🚛 Telemetría Base - Vehículo XYZ-789
-
-```sql
-INSERT INTO sensor (
-    vehicle_id,
-    speed,
-    fuel_level,
-    current_consumption,
-    latitude,
-    longitude,
-    temperature,
-    timestamp
-)
-VALUES
-(
-    2,
-    40.0,
-    14.5,
-    18.5,
-    4.6420,
-    -74.1120,
-    96.0,
-    NOW() - INTERVAL '2 minutes'
-);
-```
 
 ### Resultado esperado
 

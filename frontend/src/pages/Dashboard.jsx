@@ -116,7 +116,7 @@ const Dashboard = () => {
                 <th>ID Interno</th>
                 <th>Placa / Patente</th>
                 <th>Modelo Vehículo</th>
-                <th>ID Dispositivo IoT (Mapeado)</th>
+                <th>ID Dispositivo IoT</th>
               </tr>
             </thead>
             <tbody>
